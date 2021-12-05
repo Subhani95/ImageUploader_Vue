@@ -3,7 +3,7 @@
     <section class="main">
       <v-container class="mt-12">
         <v-row class="mt-10">
-          <v-col cols="12" lg="6" xl="6" xs="12" sm="12">
+          <v-col cols="12" md="6">
             <v-form
               class="form pa-8 rounded"
               ref="form"
@@ -33,8 +33,8 @@
                 v-model="email"
               ></v-text-field>
               <v-text-field
-                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="show1 ? 'text' : 'password'"
+                :append-icon="showRule ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="showRule ? 'text' : 'password'"
                 placeholder="Password"
                 v-model="password"
                 counter="8"
@@ -48,15 +48,17 @@
                 required
                 append-icon="mdi-camera"
               ></v-file-input>
-              <router-link to="/signin" class="link">
-                <v-btn
-                  class="white--text blue darken-4 pa-7 px-12"
-                  elevation="2"
-                  @click="submit"
-                  >Sign Up</v-btn
-                ></router-link
+
+              <v-btn
+                class="white--text blue darken-4 pa-7 px-12"
+                elevation="2"
+                @click="storeData"
+                >Sign Up</v-btn
               >
             </v-form>
+          </v-col>
+          <v-col cols="12" md="6" class="column">
+            <h1>Hello</h1>
           </v-col>
         </v-row>
       </v-container>
@@ -89,59 +91,35 @@ export default {
     }
   },
   created() {
-    this.newUser = JSON.parse(localStorage.getItem('users') || '[]')
+    this.newUser = JSON.parse(localStorage.getItem('newUser') || '[]')
   },
   methods: {
-    //  For image upload
-    // displayImg(event) {
-    //   console.log(event)
-
-    //   let store = this
-    //   const reader = new FileReader()
-    //   reader.addEventListener(
-    //     'load',
-    //     function () {
-    //       store.user_img = reader.result
-    //     },
-    //     false
-    //   )
-    //   reader.readAsDataURL(event)
-    // },
-
-    // for validations
-    submit() {
+    //method is created for storing data
+    storeData() {
       if (this.$refs.form.validate()) {
         let user = {
-          fullname: this.fullname,
+          fullName: this.fullName,
+          userName: this.userName,
           email: this.email,
           password: this.password,
-          age: this.age,
+          phoneNumber: this.phoneNumber,
         }
-
-        // duplication checkup
-
         if (
-          this.newUser.some((e) => {
-            return e.email == this.email
+          this.newUser.some((a) => {
+            return a.email == this.email
           })
         ) {
-          console.log('duplicate data does not ')
-        }
-        //push in local storage
-        else {
+          this.$alert('Already Register Email')
+        } else {
           this.newUser.push(user)
-          localStorage.setItem('users', JSON.stringify(this.newUser))
-          console.log('Your account has been successfully created')
-          this.$router.push({ name: 'Signin' })
+          localStorage.setItem('newUser', JSON.stringify(this.newUser))
+          alert('Account Created Please Login!')
+          this.$router.push({ name: 'Signin' }) //after a successfull account created user will move to the login page
         }
       } else {
-        console.log('Your account is not created')
-        this.status = 401
+        alert('Check All fields fill or correct')
       }
     },
-    // login() {
-    //   this.$router.push({ name: 'Signin' })
-    // },
   },
 }
 </script>
@@ -149,11 +127,14 @@ export default {
 .main {
   width: 100vw;
   height: 100vh;
-  overflow-y: hidden;
+  /* overflow-y: hidden; */
 }
 .form {
   background-color: rgba(243, 241, 241, 0.9);
   border-color: black;
+}
+.column {
+  background-color: rgba(243, 241, 241, 0.9);
 }
 .link {
   text-decoration: none;

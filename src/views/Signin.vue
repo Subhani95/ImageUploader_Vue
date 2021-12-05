@@ -14,22 +14,21 @@
                 :rules="emailRules"
               ></v-text-field>
               <v-text-field
-                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                :type="show1 ? 'text' : 'password'"
+                :append-icon="showRule ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="showRule ? 'text' : 'password'"
                 placeholder="Password"
                 counter="8"
-                @click:append="show1 = !show1"
+                @click:append="showRule = !showRule"
                 hint="Must contain 1 Small and Capital letter, 1 digit (Special Characters not allowed)"
                 :rules="passwordRules"
                 v-model="password"
               ></v-text-field>
-              <router-link to="Home">
-                <v-btn
-                  class="white--text blue darken-4 pa-7 px-12"
-                  elevation="2"
-                  @click="registerUser"
-                  >Sign In</v-btn
-                ></router-link
+
+              <v-btn
+                class="white--text blue darken-4 pa-7 px-12"
+                elevation="2"
+                @click="registerUser"
+                >Sign In</v-btn
               >
             </v-form>
           </v-col>
@@ -50,6 +49,7 @@ export default {
       email: '',
       password: '',
       newUser: [],
+      showRule: false,
     }
   },
   methods: {
@@ -60,7 +60,7 @@ export default {
         return a.email == this.email && a.password == this.password
       })
       if (this.registerUser) {
-        this.$router.push({ name: 'products' })
+        this.$router.push({ name: 'Home' })
         localStorage.setItem('registerUser', JSON.stringify(this.registerUser))
       } else {
         console.log('Please Enter Correct Details') //package alerts are used so that user can get an alert if he registered or not
