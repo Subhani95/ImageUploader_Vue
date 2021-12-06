@@ -11,7 +11,7 @@ const fullnameRules = [
 const passwordRules = [
   (value) => !!value || 'Password Required.',
   (value) =>
-    (value || '').length >= 5 ||
+    (value || '').length >= 8 ||
     'Must contain 1 Small and Capital letter, 1 digit (Special Characters not allowed)',
   (value) => {
     const pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/
@@ -23,7 +23,7 @@ const passwordRules = [
 //valid abc@gmail.com
 const emailRules = [
   (value) => !!value || 'Email Required.',
-  (value) => (value || '').length <= 40 || 'Max 40 characters',
+  (value) => (value || '').length <= 30 || 'Max 30 characters',
   (value) => {
     const pattern =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
