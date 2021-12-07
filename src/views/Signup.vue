@@ -22,8 +22,7 @@
                           placeholder="Full Name"
                           :rules="fullnameRules"
                           v-model="name"
-                          label=" Full Name"
-                          outlined
+                          solo
                           dense
                           color="blue"
                           aria-autocomplete="false"
@@ -34,8 +33,7 @@
                           placeholder="Age"
                           :rules="ageRules"
                           v-model="age"
-                          label=" Age"
-                          outlined
+                          solo
                           dense
                           color="blue"
                           aria-autocomplete="false"
@@ -47,8 +45,7 @@
                           ref="email"
                           :rules="emailRules"
                           v-model="email"
-                          label="Email"
-                          outlined
+                          solo
                           dense
                           color="blue"
                           aria-autocomplete="false"
@@ -62,29 +59,26 @@
                           @click:append="showRule = !showRule"
                           hint="Must contain 1 Small and Capital letter, 1 digit (Special Characters not allowed)"
                           :rules="passwordRules"
-                          label="Password"
-                          outlined
+                          solo
                           dense
                           color="blue"
                           aria-autocomplete="false"
                         ></v-text-field>
                         <v-file-input
-                          placeholder="Upload Picture"
-                          required
                           prepend-icon="mdi-camera"
-                          label="Upload Picture"
-                          outlined
-                          dense
-                          color="blue"
-                          aria-autocomplete="false"
-                          block
-                        ></v-file-input>
+                          :v-model="file"
+                          @change="captureImage"
+                          required
+                          solo
+                          placeholder="Upload Profile"
+                        >
+                        </v-file-input>
                         <v-btn
                           tile
                           outlined
                           black
                           elevation="2"
-                          @click="storeData"
+                          @click="dataStore"
                           block
                           class="btn"
                           ><i>Sign Up</i></v-btn
@@ -97,13 +91,14 @@
               <v-col cols="12" md="6" class="light-grey rounded-md">
                 <div style="text-align: center; padding: 180px 0">
                   <v-row justify="center">
-                    <v-responsive class="ml-15">
+                    <v-responsive justify="center">
                       <v-img
-                        alt="Vuetify Name"
+                        alt="Logo"
                         contain
                         min-width="150"
-                        src="../assets/logo1.png"
                         width="100"
+                        src="../assets/logo1.png"
+                        class="margin"
                       />
                     </v-responsive>
                   </v-row>
@@ -135,6 +130,7 @@ import {
   passwordRules,
   ageRules,
 } from '../Constant/constant'
+import axios from 'axios'
 export default {
   name: 'Signup',
   data() {
@@ -149,42 +145,71 @@ export default {
       email: '',
       password: '',
       age: '',
-      newUser: [],
+      file: '',
+      // newUser: [],
     }
   },
-  created() {
-    this.newUser = JSON.parse(localStorage.getItem('newUser') || '[]')
-  },
+  // created() {
+  //   this.newUser = JSON.parse(localStorage.getItem('newUser') || '[]')
+  // },
   methods: {
     //method is created for storing data
-    storeData() {
-      if (this.$refs.form.validate()) {
-        let user = {
-          name: this.name,
-          age: this.age,
-          email: this.email,
-          password: this.password,
-          phoneNumber: this.phoneNumber,
-        }
-        if (
-          this.newUser.some((a) => {
-            return a.email == this.email
-          })
-        ) {
-          this.$alert('Already Register Email')
-        } else {
-          this.newUser.push(user)
-          localStorage.setItem('newUser', JSON.stringify(this.newUser))
-          alert('Account Created Please Login!')
-          this.$router.push({ name: 'Signin' })
-          //after a successfull account created user will move to the login page
-        }
-      } else {
-        alert('Check All fields fill or correct')
-      }
-    },
+    // url() {
+    //   this.imageurl = URL.createObjectURL(this.image)
+    // },
+    // storeData() {
+    //   if (this.$refs.form.validate()) {
+    //     let user = {
+    //       name: this.name,
+    //       age: this.age,
+    //       email: this.email,
+    //       password: this.password,
+    //       phoneNumber: this.phoneNumber,
+    //       imageurl: this.imageurl,
+    //     }
+    //     if (
+    //       this.newUser.some((a) => {
+    //         return a.email == this.email
+    //       })
+    //     ) {
+    //       this.$alert('Already Register Email')
+    //     } else {
+    //       this.newUser.push(user)
+    //       localStorage.setItem('newUser', JSON.stringify(this.newUser))
+    //       alert('Account Created Please Login!')
+    //       this.$router.push({ name: 'Signin' })
+    //       //after a successfull account created user will move to the login page
+    //     }
+    //   } else {
+    //     alert('Check All fields fill or correct')
+    //   }
+    // },
     signin() {
       this.$router.push({ name: 'Signin' })
+    },
+    async dataStore() {
+      // alert('running')
+      await axios.post('http://localhost:3000/users', {
+        name: this.name,
+        password: this.password,
+        age: this.age,
+        email: this.email,
+        file: this.file,
+      })
+    },
+    captureImage(event) {
+      console.log(event)
+
+      let get = this
+      const reader = new FileReader()
+      reader.addEventListener(
+        'load',
+        function () {
+          get.file = reader.result
+        },
+        false
+      )
+      reader.readAsDataURL(event)
     },
   },
 }
@@ -192,5 +217,8 @@ export default {
 <style scoped>
 .main {
   background: linear-gradient(rgb(199, 197, 197), rgb(245, 245, 250));
+}
+.margin {
+  margin-left: 35%;
 }
 </style>

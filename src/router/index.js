@@ -5,7 +5,7 @@ import Signup from '../views/Signup.vue'
 import Signin from '../views/Signin.vue'
 import Password from '../views/Password.vue'
 import Profile from '../views/Profile.vue'
-// import Dashboard from '../views/Dashboard.vue'
+import Dashboard from '../views/Dashboard.vue'
 import UpdateProfile from '../views/UpdateProfile.vue'
 
 Vue.use(VueRouter)
@@ -54,6 +54,11 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ '../views/About.vue'),
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: Dashboard,
   },
 ]
 
