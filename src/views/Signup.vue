@@ -26,6 +26,7 @@
                           dense
                           color="blue"
                           aria-autocomplete="false"
+                          class="width"
                         ></v-text-field>
                         <v-text-field
                           prepend-inner-icon="mdi-battery-outline"
@@ -64,7 +65,7 @@
                           color="blue"
                           aria-autocomplete="false"
                         ></v-text-field>
-                        <v-file-input
+                        <!-- <v-file-input
                           prepend-icon="mdi-camera"
                           :v-model="file"
                           @change="captureImage"
@@ -72,7 +73,7 @@
                           solo
                           placeholder="Upload Profile"
                         >
-                        </v-file-input>
+                        </v-file-input> -->
                         <v-btn
                           tile
                           outlined
@@ -145,44 +146,14 @@ export default {
       email: '',
       password: '',
       age: '',
-      file: '',
+      // file: '',
       // newUser: [],
     }
   },
-  // created() {
-  //   this.newUser = JSON.parse(localStorage.getItem('newUser') || '[]')
-  // },
   methods: {
     //method is created for storing data
     // url() {
     //   this.imageurl = URL.createObjectURL(this.image)
-    // },
-    // storeData() {
-    //   if (this.$refs.form.validate()) {
-    //     let user = {
-    //       name: this.name,
-    //       age: this.age,
-    //       email: this.email,
-    //       password: this.password,
-    //       phoneNumber: this.phoneNumber,
-    //       imageurl: this.imageurl,
-    //     }
-    //     if (
-    //       this.newUser.some((a) => {
-    //         return a.email == this.email
-    //       })
-    //     ) {
-    //       this.$alert('Already Register Email')
-    //     } else {
-    //       this.newUser.push(user)
-    //       localStorage.setItem('newUser', JSON.stringify(this.newUser))
-    //       alert('Account Created Please Login!')
-    //       this.$router.push({ name: 'Signin' })
-    //       //after a successfull account created user will move to the login page
-    //     }
-    //   } else {
-    //     alert('Check All fields fill or correct')
-    //   }
     // },
     signin() {
       this.$router.push({ name: 'Signin' })
@@ -196,6 +167,7 @@ export default {
         email: this.email,
         file: this.file,
       })
+      this.$router.push({ name: 'Signin' })
     },
     captureImage(event) {
       console.log(event)
