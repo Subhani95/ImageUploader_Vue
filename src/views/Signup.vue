@@ -132,6 +132,9 @@ import {
   ageRules,
 } from '../Constant/constant'
 import axios from 'axios'
+import VueAxios from 'vue-axios'
+import Vue from 'vue'
+Vue.use(VueAxios, axios)
 export default {
   name: 'Signup',
   data() {
@@ -158,16 +161,22 @@ export default {
     signin() {
       this.$router.push({ name: 'Signin' })
     },
-    async dataStore() {
-      // alert('running')
-      await axios.post('http://localhost:3000/users', {
-        name: this.name,
-        password: this.password,
-        age: this.age,
-        email: this.email,
-        file: this.file,
-      })
-      this.$router.push({ name: 'Signin' })
+    // async
+    dataStore() {
+      alert('running')
+      // await
+      Vue.axios
+        .post('http://localhost:3000/users', {
+          name: this.name,
+          password: this.password,
+          age: this.age,
+          email: this.email,
+          file: this.file,
+        })
+        .then(function (response) {
+          console.log(response.data)
+        })
+      // this.$router.push({ name: 'Signin' })
     },
     captureImage(event) {
       console.log(event)
