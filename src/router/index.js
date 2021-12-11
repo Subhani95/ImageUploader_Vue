@@ -7,6 +7,8 @@ import Password from '../views/Password.vue'
 import Profile from '../views/Profile.vue'
 import Dashboard from '../views/Dashboard.vue'
 import UpdateProfile from '../views/UpdateProfile.vue'
+import Image from '../views/Imageuploader.vue'
+import Otp from '../views/Otp.vue'
 
 Vue.use(VueRouter)
 
@@ -22,6 +24,11 @@ const routes = [
     component: Signup,
   },
   {
+    path: '/image',
+    name: 'Image',
+    component: Image,
+  },
+  {
     path: '/password',
     name: 'Password',
     component: Password,
@@ -32,19 +39,24 @@ const routes = [
   //   component: Dashboard,
   // },
   {
-    path: '/signin',
+    path: '/login',
     name: 'Signin',
     component: Signin,
   },
   {
-    path: '/profile',
+    path: '/getprofile',
     name: 'Profile',
     component: Profile,
   },
   {
-    path: '/updateprofile',
+    path: '/updateuser',
     name: 'UpdateProfile',
     component: UpdateProfile,
+  },
+  {
+    path: '/otp',
+    name: 'Otp',
+    component: Otp,
   },
   {
     path: '/about',

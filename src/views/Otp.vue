@@ -7,7 +7,7 @@
             <v-row class="no-gutters">
               <v-col cols="12" md="6" class="elevation-5 main">
                 <v-card-text class="mt-12">
-                  <i> <h1 class="text-center mb-4">Forget Password</h1></i>
+                  <i> <h1 class="text-center mb-4">OTP</h1></i>
                   <v-row align="center" justify="center">
                     <v-col cols="12" sm="8">
                       <v-form
@@ -16,6 +16,18 @@
                         v-model="valid"
                         lazy-validation
                       >
+                        <v-text-field
+                          type="number"
+                          step="any"
+                          min="0"
+                          ref="input"
+                          :rules="[numberRule]"
+                          v-model.number="user.token"
+                          dense
+                          outlined
+                          label="OTP"
+                          color="blue"
+                        ></v-text-field>
                         <v-text-field
                           placeholder="Email"
                           prepend-inner-icon="mdi-email-outline"
@@ -29,6 +41,20 @@
                           color="blue"
                           aria-autocomplete="false"
                         ></v-text-field>
+                        <v-text-field
+                          :append-icon="showRule ? 'mdi-eye' : 'mdi-eye-off'"
+                          :type="showRule ? 'text' : 'password'"
+                          label="New Password"
+                          counter="8"
+                          hint="Must contain 1 Small and Capital letter, 1 digit (Special Characters not allowed)"
+                          @click:append="showRule = !showRule"
+                          v-model="user.newpassword"
+                          :rules="passwordRules"
+                          outlined
+                          dense
+                          color="blue"
+                          aria-autocomplete="false"
+                        ></v-text-field>
                         <v-btn
                           tile
                           outlined
@@ -36,18 +62,8 @@
                           elevation="2"
                           block
                           class="btn"
-                          @click="passwordReset"
-                          >Forget Password</v-btn
-                        >
-                        <v-btn
-                          tile
-                          outlined
-                          color="black"
-                          elevation="2"
-                          block
-                          class="btn"
-                          @click="logout"
-                          >Logout</v-btn
+                          @click="otp"
+                          >OTP</v-btn
                         >
                       </v-form>
                     </v-col>
@@ -72,32 +88,31 @@
 </template>
 
 <script>
-import { emailRules } from '../Constant/constant'
+import { emailRules, passwordRules } from '../Constant/constant'
 export default {
-  name: 'Password',
+  name: 'Otp',
   data() {
     return {
       valid: true,
       emailRules: emailRules,
+      passwordRules: passwordRules,
       showRule: false,
       user: {
+        token: '',
         email: '',
+        newpassword: '',
       },
     }
   },
   methods: {
-    logout() {
-      this.$store.dispatch('logOut')
-      // localStorage.removeItem('Token')
-      // alert('running')
-    },
-    passwordReset() {
+    //
+    otp() {
       if (this.$refs.form.validate()) {
-        this.$store.dispatch('password', this.user)
+        this.$store.dispatch('otp', this.user)
         // localStorage.setItem('currentUser', JSON.stringify(this.user))
         console.log(this.user)
       } else {
-        console.log('Email is Invalid')
+        console.log('Your account is not created')
         this.status = 401
       }
     },

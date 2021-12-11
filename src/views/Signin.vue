@@ -22,7 +22,7 @@
                           hint="abc@gmail.com"
                           ref="email"
                           :rules="emailRules"
-                          v-model="email"
+                          v-model="user.email"
                           label="Email"
                           outlined
                           dense
@@ -33,7 +33,7 @@
                           :append-icon="showRule ? 'mdi-eye' : 'mdi-eye-off'"
                           :type="showRule ? 'text' : 'password'"
                           placeholder="Password"
-                          v-model="password"
+                          v-model="user.password"
                           counter="8"
                           @click:append="showRule = !showRule"
                           hint="Must contain 1 Small and Capital letter, 1 digit (Special Characters not allowed)"
@@ -85,26 +85,18 @@ export default {
     return {
       emailRules: emailRules,
       passwordRules: passwordRules,
-      email: '',
-      password: '',
-      newUser: [],
+      user: {
+        email: '',
+        password: '',
+      },
+      // newUser: [],
       showRule: false,
     }
   },
   methods: {
     registerUser() {
-      this.newUser = JSON.parse(localStorage.getItem('newUser'))
-      console.log(this.newUser)
-      this.registerUser = this.newUser.find((a) => {
-        return a.email == this.email && a.password == this.password
-      })
-      if (this.registerUser) {
-        this.$router.push({ name: 'Profile' })
-        localStorage.setItem('registerUser', JSON.stringify(this.registerUser))
-      } else {
-        console.log('Please Enter Correct Details')
-        //package alerts are used so that user can get an alert if he registered or not
-      }
+      this.$store.dispatch('signin', this.user)
+      console.log(this.user)
     },
     signup() {
       this.$router.push({ name: 'Signup' })

@@ -21,7 +21,7 @@
                           hint="minimum 3 characters"
                           placeholder="Full Name"
                           :rules="fullnameRules"
-                          v-model="name"
+                          v-model="user.name"
                           solo
                           dense
                           color="blue"
@@ -33,7 +33,7 @@
                           hint="minimum 3 characters"
                           placeholder="Age"
                           :rules="ageRules"
-                          v-model="age"
+                          v-model="user.age"
                           solo
                           dense
                           color="blue"
@@ -45,7 +45,7 @@
                           hint="abc@gmail.com"
                           ref="email"
                           :rules="emailRules"
-                          v-model="email"
+                          v-model="user.email"
                           solo
                           dense
                           color="blue"
@@ -55,7 +55,7 @@
                           :append-icon="showRule ? 'mdi-eye' : 'mdi-eye-off'"
                           :type="showRule ? 'text' : 'password'"
                           placeholder="Password"
-                          v-model="password"
+                          v-model="user.password"
                           counter="8"
                           @click:append="showRule = !showRule"
                           hint="Must contain 1 Small and Capital letter, 1 digit (Special Characters not allowed)"
@@ -65,15 +65,29 @@
                           color="blue"
                           aria-autocomplete="false"
                         ></v-text-field>
-                        <!-- <v-file-input
+                        <!-- <v-text-field
+                          :append-icon="showRule ? 'mdi-eye' : 'mdi-eye-off'"
+                          :type="showRule ? 'text' : 'password'"
+                          placeholder="Confirm Password"
+                          v-model="user.confirmpassword"
+                          counter="8"
+                          @click:append="showRule = !showRule"
+                          hint="Must contain 1 Small and Capital letter, 1 digit (Special Characters not allowed)"
+                          :rules="confirmpasswordRules"
+                          solo
+                          dense
+                          color="blue"
+                          aria-autocomplete="false"
+                        ></v-text-field> -->
+                        <v-file-input
                           prepend-icon="mdi-camera"
-                          :v-model="file"
+                          v-model="user.file"
                           @change="captureImage"
                           required
                           solo
                           placeholder="Upload Profile"
                         >
-                        </v-file-input> -->
+                        </v-file-input>
                         <v-btn
                           tile
                           outlined
@@ -130,6 +144,7 @@ import {
   emailRules,
   passwordRules,
   ageRules,
+  // confirmpasswordRules,
 } from '../Constant/constant'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
@@ -144,12 +159,16 @@ export default {
       emailRules: emailRules,
       passwordRules: passwordRules,
       ageRules: ageRules,
+      // confirmpasswordRules: confirmpasswordRules,
       showRule: false,
-      name: '',
-      email: '',
-      password: '',
-      age: '',
-      // file: '',
+      user: {
+        name: '',
+        email: '',
+        password: '',
+        // confirmpassword: '',
+        age: '',
+        file: '',
+      },
       // newUser: [],
     }
   },
@@ -161,22 +180,18 @@ export default {
     signin() {
       this.$router.push({ name: 'Signin' })
     },
-    // async
     dataStore() {
-      alert('running')
-      // await
-      Vue.axios
-        .post('http://localhost:3000/users', {
-          name: this.name,
-          password: this.password,
-          age: this.age,
-          email: this.email,
-          file: this.file,
-        })
-        .then(function (response) {
-          console.log(response.data)
-        })
-      // this.$router.push({ name: 'Signin' })
+      if (this.$refs.form.validate()) {
+        this.$store.dispatch('signup', this.user)
+
+        // localStorage.setItem('currentUser', JSON.stringify(this.user))
+        this.$router.push({ name: 'Signin' })
+        console.log(this.user)
+      } else {
+        console.log('Your account is not created')
+
+        this.status = 401
+      }
     },
     captureImage(event) {
       console.log(event)
@@ -186,7 +201,7 @@ export default {
       reader.addEventListener(
         'load',
         function () {
-          get.file = reader.result
+          get.user.file = reader.result
         },
         false
       )

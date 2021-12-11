@@ -11,10 +11,10 @@ const fullnameRules = [
 const passwordRules = [
   (value) => !!value || 'Password Required.',
   (value) =>
-    (value || '').length >= 8 ||
+    (value || '').length >= 10 ||
     'Must contain 1 Small and Capital letter, 1 digit (Special Characters not allowed)',
   (value) => {
-    const pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/
+    const pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{10,}$/
     return pattern.test(value) || 'Invalid Password.'
   },
 ]
@@ -42,4 +42,21 @@ const ageRules = [
   },
 ]
 
-export { fullnameRules, passwordRules, emailRules, ageRules }
+const confirmpasswordRules = [
+  (value) => !!value || 'Confirm Password Required.',
+  (value) =>
+    (value || '').length >= 10 ||
+    'Must contain 1 Small and Capital letter, 1 digit (Special Characters not allowed)',
+  (value) => {
+    const pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{10,}$/
+    return pattern.test(value) || 'Invalid Password.'
+  },
+]
+
+export {
+  fullnameRules,
+  passwordRules,
+  emailRules,
+  ageRules,
+  confirmpasswordRules,
+}
