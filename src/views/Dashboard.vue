@@ -15,7 +15,7 @@
             v-bind="attrs"
             v-on="on"
             class="mr-1 transparent"
-            @click="userProfile"
+            @click="profile"
           >
             <v-icon>mdi-account</v-icon>
           </v-btn>
@@ -29,40 +29,29 @@
       <v-btn color="dark" class="black--text" @click="logout"> Logout </v-btn>
     </v-app-bar>
 
-    <!-- <v-navigation-drawer temporary app v-model="drawer">
+    <v-navigation-drawer temporary app v-model="drawer">
       <template v-slot:prepend>
         <v-list-item two-line>
           <v-list-item-content>
             <v-list-item-title>
-              <h3>CATEGORIES</h3>
+              <h3>User Profile</h3>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </template>
 
       <v-list-item two-line link>
-        <v-list-item-content @click="jeweleryItems">
-          <v-list-item-title>Jewelery Item</v-list-item-title>
+        <v-list-item-content @click="profile">
+          <v-list-item-title>Profile</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
       <v-list-item two-line link>
-        <v-list-item-content @click="menCategory">
-          <v-list-item-title>Men Category</v-list-item-title>
+        <v-list-item-content @click="update">
+          <v-list-item-title>Update Profile</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-
-      <v-list-item two-line link>
-        <v-list-item-content @click="womenCategory">
-          <v-list-item-title>Women Catergory</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-      <v-list-item two-line link>
-        <v-list-item-content @click="electronicItems">
-          <v-list-item-title>Electonic Items</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-navigation-drawer> -->
+    </v-navigation-drawer>
     <v-card min-height="100vh">
       <div class="text-center">
         <v-bottom-sheet v-model="sheet" persistent>
@@ -82,6 +71,25 @@
         </v-bottom-sheet>
       </div>
     </v-card>
+    <v-row>
+      <v-col v-for="n in 9" :key="n" class="d-flex child-flex" cols="4">
+        <v-img
+          :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
+          :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
+          aspect-ratio="1"
+          class="grey lighten-2"
+        >
+          <template v-slot:placeholder>
+            <v-row class="fill-height ma-0" align="center" justify="center">
+              <v-progress-circular
+                indeterminate
+                color="grey lighten-5"
+              ></v-progress-circular>
+            </v-row>
+          </template>
+        </v-img>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -101,6 +109,15 @@ export default {
   watch: {
     group() {
       this.drawer = false
+    },
+  },
+  methods: {
+    profile() {
+      this.$router.push({ name: 'Profile' })
+    },
+    logout() {
+      this.$store.dispatch('logOut')
+      this.$router.push({ name: 'Signin' })
     },
   },
 }

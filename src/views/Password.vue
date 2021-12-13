@@ -39,16 +39,6 @@
                           @click="passwordReset"
                           >Forget Password</v-btn
                         >
-                        <v-btn
-                          tile
-                          outlined
-                          color="black"
-                          elevation="2"
-                          block
-                          class="btn"
-                          @click="logout"
-                          >Logout</v-btn
-                        >
                       </v-form>
                     </v-col>
                   </v-row>
@@ -94,7 +84,8 @@ export default {
     passwordReset() {
       if (this.$refs.form.validate()) {
         this.$store.dispatch('password', this.user)
-        // localStorage.setItem('currentUser', JSON.stringify(this.user))
+        this.$router.push({ name: 'Otp' })
+
         console.log(this.user)
       } else {
         console.log('Email is Invalid')

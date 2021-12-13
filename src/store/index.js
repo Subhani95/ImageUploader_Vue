@@ -25,7 +25,8 @@ export default new Vuex.Store({
     signup({ commit }, payload) {
       console.log(commit)
       axios
-        .post('http://192.168.88.221:8080/user/signup', {
+        // .post('http://192.168.88.221:8080/user/signup', {
+        .post('https://imagehosting3.herokuapp.com/user/signup', {
           ...payload,
           returnSecureToken: true,
           headers: {
@@ -44,7 +45,6 @@ export default new Vuex.Store({
         })
         .then((response) => {
           console.log(response)
-          // commit('auth', authData)
           localStorage.setItem('Users', JSON.stringify(response))
         })
         .catch((error) => console.log(error))

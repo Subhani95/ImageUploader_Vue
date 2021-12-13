@@ -56,29 +56,14 @@
                           :type="showRule ? 'text' : 'password'"
                           placeholder="Password"
                           v-model="user.password"
-                          counter="8"
                           @click:append="showRule = !showRule"
-                          hint="Must contain 1 Small and Capital letter, 1 digit (Special Characters not allowed)"
+                          hint="Maximum 8 Must contain 1 Small and Capital letter, 1 digit (Special Characters not allowed)"
                           :rules="passwordRules"
                           solo
                           dense
                           color="blue"
                           aria-autocomplete="false"
                         ></v-text-field>
-                        <!-- <v-text-field
-                          :append-icon="showRule ? 'mdi-eye' : 'mdi-eye-off'"
-                          :type="showRule ? 'text' : 'password'"
-                          placeholder="Confirm Password"
-                          v-model="user.confirmpassword"
-                          counter="8"
-                          @click:append="showRule = !showRule"
-                          hint="Must contain 1 Small and Capital letter, 1 digit (Special Characters not allowed)"
-                          :rules="confirmpasswordRules"
-                          solo
-                          dense
-                          color="blue"
-                          aria-autocomplete="false"
-                        ></v-text-field> -->
                         <v-file-input
                           prepend-icon="mdi-camera"
                           v-model="user.file"

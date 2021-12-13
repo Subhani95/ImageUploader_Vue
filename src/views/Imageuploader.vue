@@ -1,40 +1,89 @@
 <template>
-  <div
-    class="uploader"
-    @dragenter="OnDragEnter"
-    @dragleave="OnDragLeave"
-    @dragover.prevent
-    @drop="onDrop"
-    :class="{ dragging: isDragging }"
-  >
-    <div class="upload-control" v-show="images.length">
-      <label for="file">Select a file</label>
-      <button @click="upload">Upload</button>
-    </div>
+  <div>
+    <v-app-bar app color="dark lighten-5">
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title style="width: 350px"> Image Upload </v-toolbar-title>
+      <v-spacer></v-spacer>
 
-    <div v-show="!images.length">
-      <i class="fa fa-cloud-upload"></i>
-      <p>Select OR Drag your pictures</p>
-      <div class="file-input">
-        <label for="file">Upload!</label>
-        <input type="file" id="file" @change="onInputChange" multiple />
+      <v-btn color="dark" class="mr-2 black--text" @click="home">
+        <v-icon> mdi-home-variant</v-icon>
+      </v-btn>
+      <v-menu left bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            v-bind="attrs"
+            v-on="on"
+            class="mr-1 transparent"
+            @click="profile"
+          >
+            <v-icon>mdi-account</v-icon>
+          </v-btn>
+        </template>
+      </v-menu>
+
+      <v-btn color="dark" class="mr-2 black--text" @click="updateProfile">
+        <v-icon> mdi-update</v-icon>
+      </v-btn>
+
+      <v-btn color="dark" class="black--text" @click="logout"> Logout </v-btn>
+    </v-app-bar>
+
+    <div
+      class="uploader"
+      @dragenter="OnDragEnter"
+      @dragleave="OnDragLeave"
+      @dragover.prevent
+      @drop="onDrop"
+      :class="{ dragging: isDragging }"
+    >
+      <div class="upload-control" v-show="images.length">
+        <label for="file">Select a file</label>
+        <button @click="upload">Upload</button>
       </div>
-    </div>
 
-    <div class="images-preview" v-show="images.length">
-      <div class="img-wrapper" v-for="(image, index) in images" :key="index">
-        <img :src="image" :alt="`Image Uplaoder ${index}`" />
-        <div class="details">
-          <span class="name" v-text="files[index].name"></span>
-          <span class="size" v-text="getFileSize(files[index].size)"></span>
+      <div v-show="!images.length">
+        <i class="fa fa-cloud-upload"></i>
+        <p>Select OR Drag your pictures</p>
+        <div class="file-input">
+          <label for="file">Upload!</label>
+          <input type="file" id="file" @change="onInputChange" multiple />
+        </div>
+      </div>
+
+      <div class="images-preview" v-show="images.length">
+        <div class="img-wrapper" v-for="(image, index) in images" :key="index">
+          <img :src="image" :alt="`Image Uplaoder ${index}`" />
+          <div class="details">
+            <span class="name" v-text="files[index].name"></span>
+            <span class="size" v-text="getFileSize(files[index].size)"></span>
+          </div>
         </div>
       </div>
     </div>
+    <v-row>
+      <v-col v-for="n in 9" :key="n" class="d-flex child-flex" cols="4">
+        <v-img
+          :src="`https://picsum.photos/500/300?image=${n * 5 + 10}`"
+          :lazy-src="`https://picsum.photos/10/6?image=${n * 5 + 10}`"
+          aspect-ratio="1"
+          class="grey lighten-2"
+        >
+          <template v-slot:placeholder>
+            <v-row class="fill-height ma-0" align="center" justify="center">
+              <v-progress-circular
+                indeterminate
+                color="grey lighten-5"
+              ></v-progress-circular>
+            </v-row>
+          </template>
+        </v-img>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script>
-// import axios from "axios";
 export default {
   data: () => ({
     isDragging: false,
@@ -79,7 +128,6 @@ export default {
     addImage(file) {
       if (!file.type.match('image.*')) {
         console.log(`${file.name} is not an image`)
-        //this.$toastr.e(`${file.name} is not an image`);
         return
       }
 
@@ -89,8 +137,6 @@ export default {
       console.log(img)
 
       const reader = new FileReader()
-      //reader.fileName = file.name;
-
       const that = this
       reader.onload = (e) => {
         that.imageobject.name2 = file.name
@@ -100,9 +146,6 @@ export default {
       }
 
       reader.readAsDataURL(file)
-      //   console.log(reader.fileName);
-
-      //img.onload = (e) => this.images.push(e.target.result);
     },
     getFileSize(size) {
       const fSExt = ['Bytes', 'KB', 'MB', 'GB']
@@ -119,6 +162,18 @@ export default {
       this.$store.dispatch('uploadimages', this.images[0])
       console.log(this.images)
     },
+    profile() {
+      this.$store.dispatch('profile')
+      this.$router.push({ name: 'Profile' })
+    },
+    logout() {
+      this.$store.dispatch('logOut')
+      this.$router.push({ name: 'Signin' })
+    },
+    updateProfile() {
+      this.$store.dispatch('updateuser', this.user)
+      this.$router.push({ name: 'UpdateProfile' })
+    },
   },
 }
 </script>
@@ -126,8 +181,8 @@ export default {
 <style lang="scss" scoped>
 .uploader {
   width: 100%;
-  background: rgb(235, 103, 103);
-  color: #fff;
+  background: rgb(216, 211, 211);
+  color: rgb(12, 11, 11);
   padding: 40px 15px;
   text-align: center;
   border-radius: 10px;
@@ -141,7 +196,7 @@ export default {
     border: 3px dashed black;
 
     .file-input label {
-      background: rgb(235, 103, 103);
+      background: rgb(233, 232, 232);
       color: #fff;
     }
   }

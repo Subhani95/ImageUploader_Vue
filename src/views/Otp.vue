@@ -45,8 +45,7 @@
                           :append-icon="showRule ? 'mdi-eye' : 'mdi-eye-off'"
                           :type="showRule ? 'text' : 'password'"
                           label="New Password"
-                          counter="8"
-                          hint="Must contain 1 Small and Capital letter, 1 digit (Special Characters not allowed)"
+                          hint="Maximum 8 Must contain 1 Small and Capital letter, 1 digit (Special Characters not allowed)"
                           @click:append="showRule = !showRule"
                           v-model="user.newpassword"
                           :rules="passwordRules"
@@ -70,12 +69,17 @@
                   </v-row>
                 </v-card-text>
               </v-col>
-              <v-col cols="12" md="6" class="white rounded-md" justify="center">
+              <v-col
+                cols="12"
+                md="6"
+                class="white rounded-md mt-3 ml-0"
+                justify="center"
+              >
                 <v-img
                   alt="Vuetify Name"
                   contain
-                  src="../assets/password.jpg"
-                  width="1638px"
+                  src="../assets/logo1.png"
+                  width="1600px"
                   height="auto"
                 />
               </v-col>
@@ -109,7 +113,7 @@ export default {
     otp() {
       if (this.$refs.form.validate()) {
         this.$store.dispatch('otp', this.user)
-        // localStorage.setItem('currentUser', JSON.stringify(this.user))
+        this.$router.push({ name: 'Signin' })
         console.log(this.user)
       } else {
         console.log('Your account is not created')

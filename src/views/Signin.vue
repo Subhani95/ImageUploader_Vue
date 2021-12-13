@@ -96,6 +96,7 @@ export default {
   methods: {
     registerUser() {
       this.$store.dispatch('signin', this.user)
+      this.$router.push({ name: 'Image' })
       console.log(this.user)
     },
     signup() {

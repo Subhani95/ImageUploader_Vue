@@ -14,7 +14,7 @@ const passwordRules = [
     (value || '').length >= 10 ||
     'Must contain 1 Small and Capital letter, 1 digit (Special Characters not allowed)',
   (value) => {
-    const pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{10,}$/
+    const pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/
     return pattern.test(value) || 'Invalid Password.'
   },
 ]
